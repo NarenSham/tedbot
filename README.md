@@ -235,7 +235,3 @@ This one:
 - "Extract action items" – agent behavior and retrieval
 
 ---
-=======
-# tedbot
-Personal OS for secure locally running AI Agents
->>>>>>> 9dd3de7f8b710f4f60c9d9d607ec6629f557d451
