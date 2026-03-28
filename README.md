@@ -1,4 +1,4 @@
-<<<<<<< HEAD
+
 # TedBot – OpenClaw Lite for Local AI Agents
 
 
