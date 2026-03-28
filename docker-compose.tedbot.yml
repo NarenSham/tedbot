@@ -1,0 +1,45 @@
+# TedBot - Simple Telegram bot with TinyLlama
+# No openclaw, no quotas, just works
+
+services:
+  tedbot:
+    image: python:3.11-slim
+    container_name: tedbot
+    restart: unless-stopped
+    env_file:
+      - .env
+    working_dir: /app
+    volumes:
+      - ./tedbot.py:/app/tedbot.py
+      - /home/ted/.tedbot:/root/.tedbot
+    environment:
+      - TELEGRAM_TOKEN=${TELEGRAM_TOKEN}
+      - ALLOWED_USER_ID=${ALLOWED_USER_ID}
+      - OLLAMA_URL=http://172.17.0.1:11434
+      - TZ=America/Toronto
+      - OLLAMA_MODEL=gemma3:1b
+      - DB_PATH=/root/.tedbot/tedbot.db
+      - TZ=America/Toronto
+    command: >
+      bash -c "pip install python-telegram-bot requests schedule --quiet && python tedbot.py"
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+
+  tedbot-ui:
+    image: python:3.11-slim
+    container_name: tedbot-ui
+    restart: unless-stopped
+    working_dir: /app
+    volumes:
+      - ./webui.py:/app/webui.py
+      - /home/ted/.tedbot:/root/.tedbot
+    environment:
+      - DB_PATH=/root/.tedbot/tedbot.db
+      - TZ=America/Toronto
+    ports:
+      - "5001:5001"
+    command: >
+      bash -c "pip install flask --quiet && python webui.py"
+
+volumes:
+  tedbot_data:
